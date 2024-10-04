@@ -21,7 +21,7 @@ header{
     gap : 25px;
 }
 
-.icons_block > svg {
+.icons_block > a > svg {
     color : white;
     font-size: 19px;
     text-decoration: none;
@@ -30,6 +30,12 @@ header{
     transition: .3s all linear;
 }
 
-.icons_block > svg:hover {
+.icons_block > a > svg:hover {
     color : gold;
 } 
+
+.cartCount{
+    color: gold;
+    font-size: 18px;
+    text-decoration: none;
+}
