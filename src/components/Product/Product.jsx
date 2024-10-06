@@ -5,11 +5,11 @@ const Product = ({ product, addToCart }) => {
     const [titleLength, setTitleLength] = useState(15);
 
     return (
-        <div className={style.product}>
-            <h3>{product.title.length >= titleLength ? `${product.title.slice(0, titleLength)}...` : product.title}</h3>
-            <b>{product.price}$</b>
-            <img src={product.image} />
-            <button onClick={() => addToCart(product)}>add to cart</button>
+        <div className={style.product_item}>
+            <img src={product.image} alt="Product 1" />
+            <h5>{product.title.length >= titleLength ? `${product.title.slice(0, titleLength)}...` : product.title}</h5>
+            <div className={style.price}>${product.price}</div>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
         </div>
     )
 }
