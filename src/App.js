@@ -11,6 +11,9 @@ import CartPage from './pages/CartPage/CartPage';
 function App({products}) {
 
   const [cart, setCart] = useState([]);
+  const [productsForSort, setProductsForSort] = useState(products);
+  const [isSorted, setIsSorted] = useState(false);
+
 
   // Add product to cart
   const addToCart = (item) => {
@@ -38,6 +41,27 @@ function App({products}) {
     }
   }
 
+  // Sort products by price
+  function sortProducts(e) {
+    const sortBy = e.target.value;
+    switch (sortBy) {
+      case 'asc':
+        console.log('asc');
+        setIsSorted(true);
+        setProductsForSort(productsForSort.toSorted((a,b) => a.price - b.price));
+        break;
+      case 'desc':
+        console.log('desc');
+        setIsSorted(true);
+        setProductsForSort(productsForSort.toSorted((a,b) => b.price - a.price));
+        break;
+      default:
+        console.log('desc');
+        setIsSorted(false);
+        setProductsForSort(products);
+    }
+  }
+
   // Decrease cart product cuantity
   function decreaseQuantity(product) {
     if (product.count <= 1) return;
@@ -55,7 +79,7 @@ function App({products}) {
     }))
   }
 
-    // Increment cart product cuantity
+  // Increment cart product quantity
   function increaseQuantity(product) {
 
     setCart(cart.map((elem) => {
@@ -83,7 +107,10 @@ function App({products}) {
       <Routes>
         <Route path='/' element={<Loyout cart={cart}/>}>
           <Route index path='/' element={<HomePage /> }/>
-          <Route  path='/products' element={<ProductsPage products={products}  addToCart={ addToCart}/> }/>
+          <Route  path='/products' element={<ProductsPage 
+          sortProducts={sortProducts} 
+          products={ isSorted ? productsForSort : products }  
+          addToCart={ addToCart}/> }/>
           <Route  path='/cart' element={<CartPage 
           cart={cart}
           decreaseQuantity={decreaseQuantity}
