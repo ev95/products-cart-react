@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import style from './Product.module.css'
 
 const Product = ({ product, addToCart }) => {
-    const [titleLength, setTitleLength] = useState(15);
+    const [titleLength, setTitleLength] = useState(20);
 
     return (
         <div className={style.product_item}>

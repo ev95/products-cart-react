@@ -1,20 +1,13 @@
-import React from 'react'
 import Product from '../../components/Product/Product'
 
 import style from './ProductsPage.module.css'
+import { ProductSort } from "../../components/ProductSort/ProductSort";
 
-const ProductsPage = ({ products, addToCart, sortProducts }) => {
+const ProductsPage = ({ products, addToCart, sortProducts, searchProduct }) => {
 
   return (
     <div className='container'>
-      <div className={style.sort_container}>
-        <label htmlFor="sort-price">Sort by Price:</label>
-        <select onChange={(e) => sortProducts(e)} id="sort-price" className={style.sort_select}>
-          <option value="reset">Reset</option>
-          <option value="asc">Low to High</option>
-          <option value="desc">High to Low</option>
-        </select>
-      </div>
+      <ProductSort sortProducts={sortProducts} searchProduct={searchProduct} />
       <div className={style.products}>
         {
           products.map((product) => {

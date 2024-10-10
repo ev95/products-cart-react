@@ -46,22 +46,45 @@ function App({products}) {
     const sortBy = e.target.value;
     switch (sortBy) {
       case 'asc':
-        console.log('asc');
         setIsSorted(true);
         setProductsForSort(productsForSort.toSorted((a,b) => a.price - b.price));
         break;
       case 'desc':
-        console.log('desc');
         setIsSorted(true);
         setProductsForSort(productsForSort.toSorted((a,b) => b.price - a.price));
         break;
       default:
-        console.log('desc');
         setIsSorted(false);
         setProductsForSort(products);
     }
   }
 
+// Search Products
+function searchProduct(text) { 
+  let searchResult = [];
+  let newText = '';
+
+  if (text.trim()) {
+    products.map((p) => {
+      const regex = new RegExp(`(${text})`, 'gi');
+      if (regex.test(p.title)) {
+        console.log(regex.test(p.title), 'regex if');
+        // newText = p.title.replace(regex, `<span className='searched'>$1</span>`);
+        searchResult = [...searchResult, {
+          ...p
+          // title: newText
+        }];
+        setIsSorted(true);
+        setProductsForSort(searchResult); 
+      } 
+      else {
+        setIsSorted(false);
+        // console.log(' not found', searchResult);
+        setProductsForSort(products); 
+      }
+    } 
+  )}
+}
   // Decrease cart product cuantity
   function decreaseQuantity(product) {
     if (product.count <= 1) return;
@@ -110,6 +133,7 @@ function App({products}) {
           <Route  path='/products' element={<ProductsPage 
           sortProducts={sortProducts} 
           products={ isSorted ? productsForSort : products }  
+          searchProduct={searchProduct}
           addToCart={ addToCart}/> }/>
           <Route  path='/cart' element={<CartPage 
           cart={cart}
