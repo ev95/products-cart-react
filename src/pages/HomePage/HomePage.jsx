@@ -6,7 +6,7 @@ const HomePage = () => {
 
   return (
     <div className={style.homeSlider}>
-       < HomeSlider />
+      < HomeSlider />
     </div>
   )
 }
