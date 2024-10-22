@@ -6,21 +6,21 @@ import "slick-carousel/slick/slick-theme.css";
 
 const HomeSlider = () => {
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay : true
-      };
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true
+  };
 
   return (
     <div>
-        <Slider {...settings}>
+      <Slider {...settings}>
         {
-          sliderArray.map((el) => {
-            return <img src={el}/>
+          sliderArray.map((el, index) => {
+            return <img key={index} src={el} alt='slider-image' />
           })
         }
       </Slider>

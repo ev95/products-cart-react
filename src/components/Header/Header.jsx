@@ -1,11 +1,16 @@
-import React from 'react'
-import style from './Header.module.css'
-import Nav from '../Nav/Nav'
-import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom';
 
+import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
+import { MainContext } from '../../App';
+import Nav from '../Nav/Nav'
 
-const Header = ({ cart }) => {
+import style from './Header.module.css'
+
+
+const Header = () => {
+  const { cart } = useContext(MainContext);
+
   return (
     <header>
       <div className='container'>

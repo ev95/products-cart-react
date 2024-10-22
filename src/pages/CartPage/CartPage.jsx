@@ -1,9 +1,13 @@
+import { useContext } from 'react';
 import CartItem from '../../components/CartItem/CartItem'
 
 import style from './CartPage.module.css'
+import { MainContext } from '../../App';
 
 
-const CartPage = ({ cart, removeItem, decreaseQuantity, increaseQuantity }) => {
+const CartPage = () => {
+  const { cart, removeItem, decreaseQuantity, increaseQuantity } = useContext(MainContext);
+
   let total = cart.reduce((accum, prod) => {
     return accum + prod.initprice;
   }, 0);

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 import Loyout from "./components/Loyout/Loyout";
@@ -9,6 +9,8 @@ import CartPage from "./pages/CartPage/CartPage";
 
 import "./App.css";
 
+export const MainContext = createContext(null);
+
 export const axios_instance = axios.create({
   baseURL: "https://fakestoreapi.com/",
 });
@@ -16,12 +18,22 @@ export const axios_instance = axios.create({
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
-  const [productsForSort, setProductsForSort] = useState(products);
+  const [productsForSort, setProductsForSort] = useState([]);
   const [isSorted, setIsSorted] = useState(false);
 
+  // Get Products
   useEffect(() => {
     axios_instance.get("products").then((res) => {
       setProducts(
+        res.data.map((el) => {
+          return {
+            ...el,
+            initprice: el.price,
+            count: 1,
+          };
+        })
+      );
+      setProductsForSort(
         res.data.map((el) => {
           return {
             ...el,
@@ -90,24 +102,24 @@ function App() {
 
     if (text.trim()) {
       products.map((p) => {
-        const regex = new RegExp(`(${text})`, "gi");
-        if (regex.test(p.title)) {
-          console.log(regex.test(p.title), "regex if");
-          // newText = p.title.replace(regex, `<span className='searched'>$1</span>`);
-          searchResult = [
-            ...searchResult,
-            {
-              ...p,
-              // title: newText
-            },
-          ];
-          setIsSorted(true);
-          setProductsForSort(searchResult);
-        } else {
-          setIsSorted(false);
-          // console.log(' not found', searchResult);
-          setProductsForSort(products);
-        }
+        // const regex = new RegExp(`(${text})`, "gi");
+        // if (regex.test(p.title)) {
+        //   console.log(regex.test(p.title), "regex if");
+        //   // newText = p.title.replace(regex, `<span className='searched'>$1</span>`);
+        //   searchResult = [
+        //     ...searchResult,
+        //     {
+        //       ...p,
+        //       // title: newText
+        //     },
+        //   ];
+        //   setIsSorted(true);
+        //   setProductsForSort(searchResult);
+        // } else {
+        //   setIsSorted(false);
+        //   // console.log(' not found', searchResult);
+        //   setProductsForSort(products);
+        // }
       });
     }
   }
@@ -154,33 +166,26 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Loyout cart={cart} />}>
-          <Route index path="/" element={<HomePage />} />
-          <Route
-            path="/products"
-            element={
-              <ProductsPage
-                sortProducts={sortProducts}
-                products={isSorted ? productsForSort : products}
-                searchProduct={searchProduct}
-                addToCart={addToCart}
-              />
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <CartPage
-                cart={cart}
-                decreaseQuantity={decreaseQuantity}
-                increaseQuantity={increaseQuantity}
-                removeItem={removeItem}
-              />
-            }
-          />
-        </Route>
-      </Routes>
+      <MainContext.Provider
+        value={{
+          cart,
+          products: isSorted ? productsForSort : products,
+          sortProducts,
+          searchProduct,
+          addToCart,
+          decreaseQuantity,
+          increaseQuantity,
+          removeItem,
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Loyout />}>
+            <Route index path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/cart" element={<CartPage />} />
+          </Route>
+        </Routes>
+      </MainContext.Provider>
     </div>
   );
 }

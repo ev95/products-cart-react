@@ -1,9 +1,12 @@
-import Product from '../../components/Product/Product'
+import { useContext } from 'react';
 
-import style from './ProductsPage.module.css'
 import { ProductSort } from "../../components/ProductSort/ProductSort";
+import Product from '../../components/Product/Product'
+import { MainContext } from '../../App';
+import style from './ProductsPage.module.css'
 
-const ProductsPage = ({ products, addToCart, sortProducts, searchProduct }) => {
+const ProductsPage = () => {
+  const { products, addToCart, sortProducts, searchProduct } = useContext(MainContext)
 
   return (
     <div className='container'>
