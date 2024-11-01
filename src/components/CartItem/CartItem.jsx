@@ -1,10 +1,14 @@
 import React from 'react'
 import style from './CartItem.module.css'
+import { useDispatch } from 'react-redux'
+import { removeFromCartAC } from '../../store/cartReducer';
 
-const CartItem = ({ cartItem, increaseQuantity, decreaseQuantity, removeItem }) => {
+const CartItem = ({ cartItem, increaseQuantity, decreaseQuantity }) => {
+
+  const dispatch = useDispatch();
 
   return (
-    <div className={style.cart_item} key={cartItem.id}>
+    <div className={style.cart_item}>
       <img src={cartItem.image} alt="Product Image" className={style.product_image} />
       <div className={style.product_details}>
         <h2 className={style.title}>{cartItem.title} </h2>
@@ -19,7 +23,7 @@ const CartItem = ({ cartItem, increaseQuantity, decreaseQuantity, removeItem }) 
       <div className={style.product_price}>${cartItem.initprice}</div>
 
       <div className={style.remove_item}>
-        <button onClick={() => removeItem(cartItem.id)}>Remove</button>
+        <button onClick={() => dispatch(removeFromCartAC(cartItem.id))}>Remove</button>
       </div>
     </div>
   )

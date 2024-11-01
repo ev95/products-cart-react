@@ -1,11 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
+import { Provider } from "react-redux";
 import axios from "axios";
 
 import Loyout from "./components/Loyout/Loyout";
 import HomePage from "./pages/HomePage/HomePage";
 import ProductsPage from "./pages/ProductsPage/ProductsPage";
 import CartPage from "./pages/CartPage/CartPage";
+import { store } from "./store/store.js";
 
 import "./App.css";
 
@@ -159,33 +161,29 @@ function App() {
     );
   }
 
-  // Remov product from cart
-  function removeItem(id) {
-    setCart([...cart.filter((p) => p.id !== id)]);
-  }
-
   return (
     <div className="App">
-      <MainContext.Provider
-        value={{
-          cart,
-          products: isSorted ? productsForSort : products,
-          sortProducts,
-          searchProduct,
-          addToCart,
-          decreaseQuantity,
-          increaseQuantity,
-          removeItem,
-        }}
-      >
-        <Routes>
-          <Route path="/" element={<Loyout />}>
-            <Route index path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/cart" element={<CartPage />} />
-          </Route>
-        </Routes>
-      </MainContext.Provider>
+      <Provider store={store}>
+        <MainContext.Provider
+          value={{
+            cart,
+            products: isSorted ? productsForSort : products,
+            sortProducts,
+            searchProduct,
+            addToCart,
+            decreaseQuantity,
+            increaseQuantity,
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Loyout />}>
+              <Route index path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/cart" element={<CartPage />} />
+            </Route>
+          </Routes>
+        </MainContext.Provider>
+      </Provider>
     </div>
   );
 }
